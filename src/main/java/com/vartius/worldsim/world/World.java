@@ -12,6 +12,7 @@ import com.vartius.worldsim.utils.KeyHandler;
 import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
+import static java.lang.Math.abs;
 
 public class World {
     Random random = new Random();
@@ -182,13 +183,12 @@ public class World {
         final int fontSize = 180 * 5 / (height > width ? height : width);
         g.setFont(new Font("JetBrainsMono NF", Font.PLAIN, fontSize));
         int cellSize = fontSize;
-        int yOffset = (windowHeight - height * cellSize) / 2;
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (grid[i][j] != null) {
                     g.drawString(String.valueOf(grid[i][j].draw(g)), i * cellSize + 3,
-                            j * cellSize + yOffset + cellSize - 3);
+                            j * cellSize + cellSize - 3);
                 }
             }
         }
@@ -196,10 +196,10 @@ public class World {
         // Draw the grid
         g.setColor(Color.LIGHT_GRAY);
         for (int i = 0; i <= width; i++) {
-            g.drawLine(i * cellSize, yOffset, i * cellSize, height * cellSize + yOffset);
+            g.drawLine(i * cellSize, 0, i * cellSize, height * cellSize);
         }
         for (int i = 0; i <= height; i++) {
-            g.drawLine(0, i * cellSize + yOffset, width * cellSize, i * cellSize + yOffset);
+            g.drawLine(0, i * cellSize, width * cellSize, i * cellSize);
         }
     }
 
@@ -247,7 +247,8 @@ public class World {
         List<int[]> positions = new ArrayList<>();
         for (int i = x - size; i <= x + size; i++) {
             for (int j = y - size; j <= y + size; j++) {
-                if (i >= 0 && i < width && j >= 0 && j < height && (i != x || j != y)) {
+                if (i >= 0 && i < width && j >= 0 && j < height && (i != x || j != y)
+                        && abs(i - x) + abs(j - y) <= size) {
                     positions.add(new int[] { i, j });
                 }
             }
@@ -300,6 +301,22 @@ public class World {
 
     public Object getOrganism(int newX, int newY) {
         return grid[newX][newY];
+    }
+
+    public void drawInfo(Graphics g, int windowWidth, int windowHeight) {
+        final int fontSize = 25;
+        g.setFont(new Font("JetBrainsMono NF", Font.PLAIN, fontSize));
+        g.drawString("Turn: " + turnCounter + " E: specialActivty Q: Quit", 10, 30);
+    }
+
+    public void drawControl(Graphics g, int windowWidth, int windowHeight) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'drawControl'");
+    }
+
+    public void drawLog(Graphics g, int windowWidth, int windowHeight) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'drawLog'");
     }
 
 }

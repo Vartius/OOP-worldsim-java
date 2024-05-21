@@ -6,6 +6,7 @@ import com.vartius.worldsim.world.World;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Graphics;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -13,8 +14,8 @@ public class App {
     public static void main(String[] args) throws InterruptedException {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int worldWidth = 10;
-        int worldHeight = 4;
-        int organismCount = 2;
+        int worldHeight = 10;
+        int organismCount = 10;
         // while (true) {
         // String input = javax.swing.JOptionPane.showInputDialog("Enter world width:");
         // if (input == null) {
@@ -49,6 +50,7 @@ public class App {
         frame.setLocationRelativeTo(null);
         KeyHandler keyHandler = new KeyHandler();
         frame.addKeyListener(keyHandler);
+        frame.setLayout(new BorderLayout());
         JPanel panel = new JPanel() {
             @Override
             public void paintComponent(Graphics g) {
@@ -56,7 +58,36 @@ public class App {
                 world.draw(g, windowWidth, windowHeight);
             }
         };
-        frame.add(panel);
+        panel.setPreferredSize(new Dimension(windowWidth / 2, windowHeight - 100));
+        frame.add(panel, BorderLayout.WEST);
+
+        JPanel infoPanel = new JPanel() {
+            @Override
+            public void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                world.drawInfo(g, windowWidth, windowHeight);
+            }
+        };
+        infoPanel.setPreferredSize(new Dimension(windowWidth, 40));
+        frame.add(infoPanel, BorderLayout.NORTH);
+
+        // JPanel controlPanel = new JPanel() {
+        // @Override
+        // public void paintComponent(Graphics g) {
+        // super.paintComponent(g);
+        // world.drawControl(g, windowWidth, windowHeight);
+        // }
+        // };
+        // frame.add(controlPanel);
+
+        // JPanel logPanel = new JPanel() {
+        // @Override
+        // public void paintComponent(Graphics g) {
+        // super.paintComponent(g);
+        // world.drawLog(g, windowWidth, windowHeight);
+        // }
+        // };
+        // frame.add(logPanel);
         frame.setVisible(true);
 
         while (true) {
