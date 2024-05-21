@@ -1,5 +1,6 @@
 package com.vartius.worldsim.organisms.animals;
 
+import java.awt.Graphics;
 import java.util.List;
 import java.util.Random;
 
@@ -17,7 +18,8 @@ public class Antelope extends Animal {
     }
 
     @Override
-    public String draw() {
+    public String draw(Graphics g) {
+        g.setColor(java.awt.Color.ORANGE);
         return "󱌃";
     }
 
@@ -31,6 +33,22 @@ public class Antelope extends Animal {
             world.moveOrganism(x, y, newX, newY);
         } else {
             ((Organism) world.getOrganism(newX, newY)).collision(this);
+        }
+    }
+
+    @Override
+    public void collision(Organism attacker) {
+        if (random.nextInt(2) == 0) {
+            List<int[]> positions = world.getFreePositions(x, y, 1);
+            if (positions.size() > 0) {
+                int[] position = positions.get(random.nextInt(positions.size()));
+                world.moveOrganism(x, y, position[0], position[1]);
+                System.out.println(this.name + " escapes from " + attacker.getName() + " at " + x + ", " + y);
+            } else {
+                super.collision(attacker);
+            }
+        } else {
+            super.collision(attacker);
         }
     }
 

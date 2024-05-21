@@ -1,5 +1,6 @@
 package com.vartius.worldsim.organisms.animals;
 
+import java.awt.Graphics;
 import java.util.List;
 
 import com.vartius.worldsim.world.World;
@@ -18,7 +19,8 @@ public class Wolf extends Animal {
     }
 
     @Override
-    public String draw() {
+    public String draw(Graphics g) {
+        g.setColor(java.awt.Color.GRAY);
         return "󰩃";
     }
 

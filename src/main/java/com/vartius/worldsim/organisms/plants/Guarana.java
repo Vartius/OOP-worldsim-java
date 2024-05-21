@@ -1,7 +1,9 @@
 package com.vartius.worldsim.organisms.plants;
 
+import java.awt.Graphics;
 import java.util.Random;
 
+import com.vartius.worldsim.organisms.Organism;
 import com.vartius.worldsim.world.World;
 
 public class Guarana extends Plant {
@@ -14,8 +16,16 @@ public class Guarana extends Plant {
     }
 
     @Override
-    public String draw() {
+    public String draw(Graphics g) {
+        g.setColor(java.awt.Color.GREEN);
         return "󰁳";
+    }
+
+    @Override
+    public void collision(Organism other) {
+        super.collision(other);
+        other.setStrength(other.getStrength() + 3);
+        System.out.println(other.getName() + " ate " + this.getName() + " and gained 3 strength");
     }
 
 }

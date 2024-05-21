@@ -10,32 +10,55 @@ import com.vartius.worldsim.organisms.plants.*;
 import com.vartius.worldsim.utils.KeyHandler;
 
 import java.util.List;
+import java.util.Random;
 import java.util.ArrayList;
 
 public class World {
+    Random random = new Random();
     private int width;
     private int height;
     private Organism[][] grid;
     private List<Organism> organisms = new ArrayList<>();
     private int turnCounter;
 
-    public World(int width, int height) {
+    public World(int width, int height, int organismCount) {
         this.width = width;
         this.height = height;
         this.grid = new Organism[width][height];
         this.turnCounter = 0;
-        initializeWorld();
+        initializeWorld(organismCount);
     }
 
-    private void initializeWorld() {
+    private void initializeWorld(int organismCount) {
         String[] organismsNames = { "Wolf", "Sheep", "Turtle", "Fox", "Antelope", "Grass", "Dandelion", "Guarana",
                 "Hogweed", "DeadlyNightshade" };
         int[] position = getRandomFreePosition();
         addOrganism("Human", position[0], position[1]);
-        for (String name : organismsNames) {
+        // for (String name : organismsNames) {
+        // position = getRandomFreePosition();
+        // addOrganism(name, position[0], position[1]);
+        // }
+
+        // random organisms
+        for (int i = 0; i < organismCount; i++) {
             position = getRandomFreePosition();
-            addOrganism(name, position[0], position[1]);
+            addOrganism(organismsNames[random.nextInt(organismsNames.length)], position[0], position[1]);
         }
+
+        // position = getRandomFreePosition();
+        // addOrganism("Turtle", position[0], position[1]);
+        // position = getRandomFreePosition();
+        // addOrganism("Turtle", position[0], position[1]);
+
+        // position = getRandomFreePosition();
+        // addOrganism("Turtle", position[0], position[1]);
+
+        // position = getRandomFreePosition();
+        // addOrganism("Turtle", position[0], position[1]);
+
+        // position = getRandomFreePosition();
+        // addOrganism("Turtle", position[0], position[1]);
+
     }
 
     public List<Organism> sortOrganisms() {
@@ -66,8 +89,22 @@ public class World {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (grid[i][j] != null && !grid[i][j].isAlive()) {
+                    if (grid[i][j] instanceof Human) {
+                        System.out.println("Game over!");
+                        System.exit(0);
+                    }
                     removeOrganism(grid[i][j]);
                 }
+            }
+        }
+        for (int i = 0; i < organisms.size(); i++) {
+            if (!organisms.get(i).isAlive()) {
+                if (organisms.get(i) instanceof Human) {
+                    System.out.println("Game over!");
+                    System.exit(0);
+                }
+                organisms.remove(i);
+                i--;
             }
         }
     }
@@ -124,7 +161,7 @@ public class World {
     }
 
     public void draw(Graphics g, int windowWidth, int windowHeight) {
-        final int fontSize = 20;
+        final int fontSize = 180 * 5 / height;
         g.setFont(new Font("JetBrainsMono NF", Font.PLAIN, fontSize));
         int cellSize = fontSize;
         int yOffset = (windowHeight - height * cellSize) / 2;
@@ -132,7 +169,7 @@ public class World {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (grid[i][j] != null) {
-                    g.drawString(String.valueOf(grid[i][j].draw()), i * cellSize + 3,
+                    g.drawString(String.valueOf(grid[i][j].draw(g)), i * cellSize + 3,
                             j * cellSize + yOffset + cellSize - 3);
                 }
             }
@@ -157,13 +194,20 @@ public class World {
     }
 
     public void moveOrganism(int x, int y, int newX, int newY) {
-        if (newX < 0 || newX >= width || newY < 0 || newY >= height) {
+        // if (newX < 0 || newX >= width || newY < 0 || newY >= height) {
+        // return;
+        // }
+        if (!isInBound(newX, newY)) {
             return;
         }
         Organism organism = grid[x][y];
         grid[x][y] = null;
         grid[newX][newY] = organism;
         organism.setPosition(newX, newY);
+    }
+
+    public boolean isInBound(int x, int y) {
+        return x >= 0 && x < width && y >= 0 && y < height;
     }
 
     public Human getHuman() {

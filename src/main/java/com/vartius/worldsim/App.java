@@ -13,8 +13,9 @@ import java.awt.Toolkit;
 public class App {
     public static void main(String[] args) throws InterruptedException {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int worldWidth = 20;
-        int worldHeight = 20;
+        int worldWidth = 50;
+        int worldHeight = 50;
+        int organismCount = 80;
         // while (true) {
         // String input = javax.swing.JOptionPane.showInputDialog("Enter world width:");
         // if (input == null) {
@@ -39,7 +40,7 @@ public class App {
         // }
         // }
 
-        final World world = new World(worldWidth, worldHeight);
+        final World world = new World(worldWidth, worldHeight, organismCount);
         final int windowHeight = screenSize.height - 100;
         final int windowWidth = screenSize.width - 100;
         JFrame frame = new JFrame("WorldSim");

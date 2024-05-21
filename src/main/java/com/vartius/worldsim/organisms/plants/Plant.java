@@ -3,6 +3,7 @@ package com.vartius.worldsim.organisms.plants;
 import com.vartius.worldsim.organisms.Organism;
 import com.vartius.worldsim.world.World;
 
+import java.awt.Graphics;
 import java.util.List;
 import java.util.Random;
 
@@ -21,7 +22,7 @@ public abstract class Plant extends Organism {
 
     private void spread() {
         List<int[]> positions = world.getFreePositions(x, y, 1);
-        if (positions.size() > 0 && random.nextInt(100) < 10) {
+        if (positions.size() > 0 && random.nextInt(100) < 1) {
             int[] position = positions.get(random.nextInt(positions.size()));
             world.addOrganism(this.getName(), position[0], position[1]);
         }
@@ -31,11 +32,15 @@ public abstract class Plant extends Organism {
     public void collision(Organism other) {
         if (other.getStrength() > this.strength) {
             this.setAlive(false);
+            System.out.println(other.getName() + " eats " + this.getName() + " at " + x + ", " + y);
+            world.moveOrganism(other.getX(), other.getY(), x, y);
         } else {
             other.setAlive(false);
+            System.out.println(this.getName() + " eats " + other.getName() + " at " + x + ", " + y);
+            // world.moveOrganism(x, y, other.getX(), other.getY());
         }
     }
 
     @Override
-    public abstract String draw();
+    public abstract String draw(Graphics g);
 }

@@ -1,7 +1,9 @@
 package com.vartius.worldsim.organisms.plants;
 
+import java.awt.Graphics;
 import java.util.Random;
 
+import com.vartius.worldsim.organisms.Organism;
 import com.vartius.worldsim.world.World;
 
 public class DeadlyNightshade extends Plant {
@@ -14,8 +16,15 @@ public class DeadlyNightshade extends Plant {
     }
 
     @Override
-    public String draw() {
-        return "";
+    public String draw(Graphics g) {
+        g.setColor(java.awt.Color.MAGENTA);
+        return "";
+    }
+
+    @Override
+    public void collision(Organism other) {
+        super.collision(other);
+        other.setAlive(false);
     }
 
 }

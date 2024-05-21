@@ -1,5 +1,6 @@
 package com.vartius.worldsim.organisms.animals;
 
+import java.awt.Graphics;
 import java.util.List;
 import java.util.Random;
 
@@ -28,13 +29,26 @@ public abstract class Animal extends Organism {
 
     @Override
     public void collision(Organism other) {
-        if (other.getStrength() > this.strength) {
-            this.setAlive(false);
+        if (other.getName() == this.name) {
+            // reproduction
+            List<int[]> positions = world.getFreePositions(x, y, 1);
+            if (positions.size() > 0 && random.nextInt(100) < 10) {
+                int[] position = positions.get(random.nextInt(positions.size()));
+                world.addOrganism(this.getName(), position[0], position[1]);
+            }
         } else {
-            other.setAlive(false);
+            if (other.getStrength() > this.strength) {
+                System.out.println(other.getName() + " eats " + this.getName() + " at " + x + ", " + y);
+                this.setAlive(false);
+                world.moveOrganism(other.getX(), other.getY(), x, y);
+            } else {
+                System.out.println(this.getName() + " eats " + other.getName() + " at " + x + ", " + y);
+                other.setAlive(false);
+                world.moveOrganism(x, y, other.getX(), other.getY());
+            }
         }
     }
 
     @Override
-    public abstract String draw();
+    public abstract String draw(Graphics g);
 }

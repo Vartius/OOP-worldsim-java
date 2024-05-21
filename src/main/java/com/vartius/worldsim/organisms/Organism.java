@@ -1,5 +1,7 @@
 package com.vartius.worldsim.organisms;
 
+import java.awt.Graphics;
+
 import com.vartius.worldsim.world.World;
 
 public abstract class Organism {
@@ -77,5 +79,5 @@ public abstract class Organism {
 
     public abstract void collision(Organism other);
 
-    public abstract String draw();
+    public abstract String draw(Graphics g);
 }

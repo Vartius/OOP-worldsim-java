@@ -1,5 +1,6 @@
 package com.vartius.worldsim.organisms.animals;
 
+import java.awt.Graphics;
 import java.util.List;
 import java.util.Random;
 
@@ -17,7 +18,8 @@ public class Turtle extends Animal {
     }
 
     @Override
-    public String draw() {
+    public String draw(Graphics g) {
+        g.setColor(java.awt.Color.GREEN);
         return "󰳗";
     }
 
@@ -26,6 +28,15 @@ public class Turtle extends Animal {
         if (random.nextInt(4) == 0) {
             super.action();
         }
+    }
+
+    @Override
+    public void collision(Organism attacker) {
+        if (attacker.getStrength() < 5 && !(attacker instanceof Turtle)) {
+            System.out.println(attacker.getName() + " attacks " + this.name + " but it's too strong");
+            return;
+        }
+        super.collision(attacker);
     }
 
 }

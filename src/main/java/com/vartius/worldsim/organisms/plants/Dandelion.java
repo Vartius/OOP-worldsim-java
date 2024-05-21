@@ -1,5 +1,6 @@
 package com.vartius.worldsim.organisms.plants;
 
+import java.awt.Graphics;
 import java.util.Random;
 
 import com.vartius.worldsim.world.World;
@@ -14,7 +15,8 @@ public class Dandelion extends Plant {
     }
 
     @Override
-    public String draw() {
+    public String draw(Graphics g) {
+        g.setColor(java.awt.Color.YELLOW);
         return "󰧱";
     }
 
