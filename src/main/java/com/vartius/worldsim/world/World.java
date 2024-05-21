@@ -3,6 +3,9 @@ package com.vartius.worldsim.world;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,6 +21,8 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
 import java.util.ArrayList;
@@ -199,6 +204,12 @@ public class World {
         organisms.remove(organism);
     }
 
+    public void changeBoardSize(int width, int height) {
+        this.width = width;
+        this.height = height;
+        this.grid = new Organism[width][height];
+    }
+
     public void draw(Graphics g, int windowWidth, int windowHeight) {
         final int fontSize = 180 * 5 / (height > width ? height : width);
         g.setFont(new Font("JetBrainsMono NF", Font.PLAIN, fontSize));
@@ -209,6 +220,7 @@ public class World {
                 if (grid[i][j] != null) {
                     g.drawString(String.valueOf(grid[i][j].draw(g)), i * cellSize + 3,
                             j * cellSize + cellSize - 3);
+
                 }
             }
         }
@@ -390,9 +402,7 @@ public class World {
             }
         }
         organisms.clear();
-
-        width = world.getInt("width");
-        height = world.getInt("height");
+        changeBoardSize(world.getInt("width"), world.getInt("height"));
         turnCounter = world.getInt("turnCounter");
 
         JSONArray organismsArray = world.getJSONArray("organisms");
@@ -411,6 +421,121 @@ public class World {
             organism.setAlive(org.getBoolean("alive"));
         }
         isPlayerTurn = true;
+    }
+
+    public void clickCell(int x, int y) {
+        if (!(grid[x][y] instanceof Human)) {
+            // ask which organism create in this cell
+            JFrame frame = new JFrame();
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setSize(300, 200);
+            frame.setResizable(false);
+            frame.setLocationRelativeTo(null);
+            frame.setLayout(new GridLayout(5, 2));
+            JButton wolf = new JButton("Wolf");
+            JButton sheep = new JButton("Sheep");
+            JButton turtle = new JButton("Turtle");
+            JButton fox = new JButton("Fox");
+            JButton antelope = new JButton("Antelope");
+            JButton grass = new JButton("Grass");
+            JButton dandelion = new JButton("Dandelion");
+            JButton guarana = new JButton("Guarana");
+            JButton hogweed = new JButton("Hogweed");
+            JButton deadlyNightshade = new JButton("DeadlyNightshade");
+
+            frame.add(wolf);
+            frame.add(sheep);
+            frame.add(turtle);
+            frame.add(fox);
+            frame.add(antelope);
+            frame.add(grass);
+            frame.add(dandelion);
+            frame.add(guarana);
+            frame.add(hogweed);
+            frame.add(deadlyNightshade);
+
+            wolf.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addOrganism("Wolf", x, y);
+                    frame.dispose();
+                }
+            });
+
+            sheep.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addOrganism("Sheep", x, y);
+                    frame.dispose();
+                }
+            });
+
+            turtle.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addOrganism("Turtle", x, y);
+                    frame.dispose();
+                }
+            });
+
+            fox.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addOrganism("Fox", x, y);
+                    frame.dispose();
+                }
+            });
+
+            antelope.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addOrganism("Antelope", x, y);
+                    frame.dispose();
+                }
+            });
+
+            grass.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addOrganism("Grass", x, y);
+                    frame.dispose();
+                }
+            });
+
+            dandelion.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addOrganism("Dandelion", x, y);
+                    frame.dispose();
+                }
+            });
+
+            guarana.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addOrganism("Guarana", x, y);
+                    frame.dispose();
+                }
+            });
+
+            hogweed.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addOrganism("Hogweed", x, y);
+                    frame.dispose();
+                }
+            });
+
+            deadlyNightshade.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addOrganism("DeadlyNightshade", x, y);
+                    frame.dispose();
+                }
+            });
+
+            frame.setVisible(true);
+        }
     }
 
 }

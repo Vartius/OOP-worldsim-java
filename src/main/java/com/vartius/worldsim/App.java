@@ -8,7 +8,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -17,9 +21,9 @@ import java.awt.Toolkit;
 public class App {
     public static void main(String[] args) throws InterruptedException {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int worldWidth = 40;
-        int worldHeight = 40;
-        int organismCount = 40;
+        int worldWidth = 20;
+        int worldHeight = 20;
+        int organismCount = 20;
         // while (true) {
         // String input = javax.swing.JOptionPane.showInputDialog("Enter world width:");
         // if (input == null) {
@@ -50,8 +54,10 @@ public class App {
         frame.setSize(windowWidth, windowHeight);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
+
         KeyHandler keyHandler = new KeyHandler();
         frame.addKeyListener(keyHandler);
+
         frame.setLayout(new BorderLayout());
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
@@ -74,6 +80,7 @@ public class App {
             }
         };
         panel.setPreferredSize(new Dimension(windowWidth / 2, windowHeight - 100));
+        panel.setLayout(new GridLayout(worldWidth, worldHeight));
         frame.add(panel, BorderLayout.WEST);
 
         JPanel infoPanel = new JPanel() {
@@ -87,8 +94,49 @@ public class App {
         frame.add(infoPanel, BorderLayout.NORTH);
         frame.setVisible(true);
 
+        final int worldWidthFinal1 = worldWidth;
+        final int worldHeightFinal1 = worldHeight;
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int cellSize = 180 * 5 / (worldHeightFinal1 > worldWidthFinal1 ? worldHeightFinal1 : worldWidthFinal1);
+                int i = e.getX() / cellSize;
+                int j = e.getY() / cellSize;
+                if (i < worldWidthFinal1 && j < worldHeightFinal1) {
+                    System.out.println("Cell clicked: " + i + "," + j);
+                    world.clickCell(i, j);
+                }
+            }
+        });
+
         while (true) {
             world.nextTurn(keyHandler);
+            if (world.getWidth() != worldWidth || world.getHeight() != worldHeight) {
+                worldWidth = world.getWidth();
+                worldHeight = world.getHeight();
+                panel.setPreferredSize(new Dimension(windowWidth / 2, windowHeight - 100));
+                final int worldWidthFinal = worldWidth;
+                final int worldHeightFinal = worldHeight;
+                System.out.println("World size changed to: " + worldWidth + "x" + worldHeight);
+                for (MouseListener listener : panel.getMouseListeners()) {
+                    panel.removeMouseListener(listener);
+                }
+                panel.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        int cellSize = 180 * 5
+                                / (worldHeightFinal > worldWidthFinal ? worldHeightFinal : worldWidthFinal);
+                        int i = e.getX() / cellSize;
+                        int j = e.getY() / cellSize;
+                        if (i < worldWidthFinal && j < worldHeightFinal) {
+                            System.out.println("Cell clicked: " + i + "," + j);
+                            world.clickCell(i, j);
+                        }
+                    }
+                });
+
+                frame.pack();
+            }
             System.out.println("Turn: " + world.getTurnCounter());
             frame.repaint();
             ;
