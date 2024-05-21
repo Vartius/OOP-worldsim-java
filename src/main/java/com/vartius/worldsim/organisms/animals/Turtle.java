@@ -1,7 +1,6 @@
 package com.vartius.worldsim.organisms.animals;
 
 import java.awt.Graphics;
-import java.util.List;
 import java.util.Random;
 
 import com.vartius.worldsim.organisms.Organism;

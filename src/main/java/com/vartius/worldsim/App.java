@@ -1,6 +1,5 @@
 package com.vartius.worldsim;
 
-import com.vartius.worldsim.organisms.animals.Human;
 import com.vartius.worldsim.utils.KeyHandler;
 import com.vartius.worldsim.world.World;
 // import com.vartius.worldsim.organisms.animals.Human;
@@ -13,9 +12,9 @@ import java.awt.Toolkit;
 public class App {
     public static void main(String[] args) throws InterruptedException {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int worldWidth = 50;
-        int worldHeight = 50;
-        int organismCount = 80;
+        int worldWidth = 10;
+        int worldHeight = 4;
+        int organismCount = 2;
         // while (true) {
         // String input = javax.swing.JOptionPane.showInputDialog("Enter world width:");
         // if (input == null) {

@@ -79,7 +79,25 @@ public class World {
             // check if human
             if (organisms.get(i) instanceof Human) {
                 Human human = (Human) organisms.get(i);
-                human.action(keyHandler);
+                if (human.getSpecialActionCooldown() > 0) {
+                    human.setSpecialActionCooldown(human.getSpecialActionCooldown() - 1);
+                }
+
+                while (!human.action(keyHandler))
+                    ;
+                if (human.getSpecialAction() > 3) {
+                    human.setSpecialAction(human.getSpecialAction() - 1);
+                    while (!human.action(keyHandler))
+                        ;
+                    human.setSpecialActionCooldown(5);
+                } else if (human.getSpecialAction() > 0) {
+                    human.setSpecialAction(human.getSpecialAction() - 1);
+                    if (random.nextInt(100) < 50) {
+                        while (!human.action(keyHandler))
+                            ;
+                    }
+                    human.setSpecialActionCooldown(5);
+                }
             } else if (organisms.get(i).isAlive() && organisms.get(i).getAge() != turnCounter) {
                 organisms.get(i).action();
             }
@@ -161,7 +179,7 @@ public class World {
     }
 
     public void draw(Graphics g, int windowWidth, int windowHeight) {
-        final int fontSize = 180 * 5 / height;
+        final int fontSize = 180 * 5 / (height > width ? height : width);
         g.setFont(new Font("JetBrainsMono NF", Font.PLAIN, fontSize));
         int cellSize = fontSize;
         int yOffset = (windowHeight - height * cellSize) / 2;

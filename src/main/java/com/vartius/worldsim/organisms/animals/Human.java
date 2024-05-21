@@ -18,13 +18,29 @@ public class Human extends Animal {
         this.name = "Human";
     }
 
+    public void setSpecialAction(int specialAction) {
+        this.specialAction = specialAction;
+    }
+
+    public int getSpecialAction() {
+        return specialAction;
+    }
+
+    public void setSpecialActionCooldown(int specialActionCooldown) {
+        this.specialActionCooldown = specialActionCooldown;
+    }
+
+    public int getSpecialActionCooldown() {
+        return specialActionCooldown;
+    }
+
     @Override
     public String draw(Graphics g) {
         g.setColor(java.awt.Color.BLUE);
         return "󰙃";
     }
 
-    public void action(KeyHandler keyHandler) throws InterruptedException {
+    public boolean action(KeyHandler keyHandler) throws InterruptedException {
         char key = keyHandler.getKey();
         switch (key) {
             case 'w':
@@ -35,6 +51,8 @@ public class Human extends Animal {
                     else {
                         ((Organism) this.world.getOrganism(this.x, this.y - 1)).collision(this);
                     }
+                else
+                    return false;
                 break;
             case 'a':
                 // move left
@@ -44,6 +62,8 @@ public class Human extends Animal {
                     else {
                         ((Organism) this.world.getOrganism(this.x - 1, this.y)).collision(this);
                     }
+                else
+                    return false;
                 break;
             case 's':
                 // move down
@@ -53,6 +73,8 @@ public class Human extends Animal {
                     else {
                         ((Organism) this.world.getOrganism(this.x, this.y + 1)).collision(this);
                     }
+                else
+                    return false;
                 break;
             case 'd':
                 // move right
@@ -62,19 +84,25 @@ public class Human extends Animal {
                     else {
                         ((Organism) this.world.getOrganism(this.x + 1, this.y)).collision(this);
                     }
+                else
+                    return false;
                 break;
             case 'e':
                 // Szybkość antylopy
                 if (specialAction == 0 && specialActionCooldown == 0) {
                     specialAction = 5;
                     System.out.println("Antelope speed activated");
+                } else {
+                    System.out.println(
+                            "specialAction: " + specialAction + " specialActionCooldown: " + specialActionCooldown);
                 }
-                break;
+                return false;
             case 'q':
                 // quit
                 System.exit(0);
                 break;
         }
+        return true;
 
     }
 

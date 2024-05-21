@@ -1,12 +1,10 @@
 package com.vartius.worldsim.organisms.plants;
 
 import java.awt.Graphics;
-import java.util.Random;
 
 import com.vartius.worldsim.world.World;
 
 public class Dandelion extends Plant {
-    private static final Random random = new Random();
 
     public Dandelion(int x, int y, World world) {
         super(x, y, world);
