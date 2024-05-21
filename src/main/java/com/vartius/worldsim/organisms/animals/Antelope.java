@@ -43,7 +43,7 @@ public class Antelope extends Animal {
             if (positions.size() > 0) {
                 int[] position = positions.get(random.nextInt(positions.size()));
                 world.moveOrganism(x, y, position[0], position[1]);
-                System.out.println(this.name + " escapes from " + attacker.getName() + " at " + x + ", " + y);
+                world.addLog(this.name + " escapes from " + attacker.getName() + " at " + x + ", " + y);
             } else {
                 super.collision(attacker);
             }

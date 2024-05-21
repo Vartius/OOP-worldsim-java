@@ -32,7 +32,7 @@ public class Turtle extends Animal {
     @Override
     public void collision(Organism attacker) {
         if (attacker.getStrength() < 5 && !(attacker instanceof Turtle)) {
-            System.out.println(attacker.getName() + " attacks " + this.name + " but it's too strong");
+            world.addLog(attacker.getName() + " attacks " + this.name + " but it's too strong");
             return;
         }
         super.collision(attacker);

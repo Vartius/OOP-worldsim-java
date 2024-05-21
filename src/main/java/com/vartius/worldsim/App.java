@@ -5,9 +5,12 @@ import com.vartius.worldsim.world.World;
 // import com.vartius.worldsim.organisms.animals.Human;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+
 import java.awt.Graphics;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 
 public class App {
@@ -39,8 +42,6 @@ public class App {
         // break;
         // }
         // }
-
-        final World world = new World(worldWidth, worldHeight, organismCount);
         final int windowHeight = screenSize.height - 100;
         final int windowWidth = screenSize.width - 100;
         JFrame frame = new JFrame("WorldSim");
@@ -51,6 +52,15 @@ public class App {
         KeyHandler keyHandler = new KeyHandler();
         frame.addKeyListener(keyHandler);
         frame.setLayout(new BorderLayout());
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        textArea.setFocusable(false);
+        textArea.setPreferredSize(new Dimension(windowWidth / 2, windowHeight - 100));
+        textArea.setLineWrap(true);
+        textArea.setFont(new Font("JetBrainsMono NF", Font.PLAIN, 20));
+        frame.add(textArea, BorderLayout.EAST);
+        final World world = new World(worldWidth, worldHeight, organismCount, textArea);
+
         JPanel panel = new JPanel() {
             @Override
             public void paintComponent(Graphics g) {
@@ -84,10 +94,12 @@ public class App {
         // @Override
         // public void paintComponent(Graphics g) {
         // super.paintComponent(g);
-        // world.drawLog(g, windowWidth, windowHeight);
+        // world.drawLogs(g, windowWidth, windowHeight);
         // }
         // };
-        // frame.add(logPanel);
+        // logPanel.setPreferredSize(new Dimension(windowWidth / 2, windowHeight -
+        // 100));
+        // frame.add(logPanel, BorderLayout.EAST);
         frame.setVisible(true);
 
         while (true) {

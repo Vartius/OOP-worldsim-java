@@ -11,6 +11,9 @@ import com.vartius.worldsim.utils.KeyHandler;
 
 import java.util.List;
 import java.util.Random;
+
+import javax.swing.JTextArea;
+
 import java.util.ArrayList;
 import static java.lang.Math.abs;
 
@@ -21,12 +24,14 @@ public class World {
     private Organism[][] grid;
     private List<Organism> organisms = new ArrayList<>();
     private int turnCounter;
+    private JTextArea logs = new JTextArea();
 
-    public World(int width, int height, int organismCount) {
+    public World(int width, int height, int organismCount, JTextArea logs) {
         this.width = width;
         this.height = height;
         this.grid = new Organism[width][height];
         this.turnCounter = 0;
+        this.logs = logs;
         initializeWorld(organismCount);
     }
 
@@ -109,7 +114,7 @@ public class World {
             for (int j = 0; j < height; j++) {
                 if (grid[i][j] != null && !grid[i][j].isAlive()) {
                     if (grid[i][j] instanceof Human) {
-                        System.out.println("Game over!");
+                        addLog("Game over!");
                         System.exit(0);
                     }
                     removeOrganism(grid[i][j]);
@@ -119,7 +124,7 @@ public class World {
         for (int i = 0; i < organisms.size(); i++) {
             if (!organisms.get(i).isAlive()) {
                 if (organisms.get(i) instanceof Human) {
-                    System.out.println("Game over!");
+                    addLog("Game over!");
                     System.exit(0);
                 }
                 organisms.remove(i);
@@ -314,9 +319,8 @@ public class World {
         throw new UnsupportedOperationException("Unimplemented method 'drawControl'");
     }
 
-    public void drawLog(Graphics g, int windowWidth, int windowHeight) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'drawLog'");
+    public void addLog(String log) {
+        logs.append(log + "\n");
     }
 
 }

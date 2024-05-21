@@ -32,11 +32,11 @@ public abstract class Plant extends Organism {
     public void collision(Organism other) {
         if (other.getStrength() > this.strength) {
             this.setAlive(false);
-            System.out.println(other.getName() + " eats " + this.getName() + " at " + x + ", " + y);
+            world.addLog(other.getName() + " eats " + this.getName() + " at " + x + ", " + y);
             world.moveOrganism(other.getX(), other.getY(), x, y);
         } else {
             other.setAlive(false);
-            System.out.println(this.getName() + " eats " + other.getName() + " at " + x + ", " + y);
+            world.addLog(this.getName() + " eats " + other.getName() + " at " + x + ", " + y);
             // world.moveOrganism(x, y, other.getX(), other.getY());
         }
     }

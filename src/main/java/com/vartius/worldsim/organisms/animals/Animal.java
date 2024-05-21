@@ -38,11 +38,11 @@ public abstract class Animal extends Organism {
             }
         } else {
             if (other.getStrength() > this.strength) {
-                System.out.println(other.getName() + " eats " + this.getName() + " at " + x + ", " + y);
+                world.addLog(other.getName() + " eats " + this.getName() + " at " + x + ", " + y);
                 this.setAlive(false);
                 world.moveOrganism(other.getX(), other.getY(), x, y);
             } else {
-                System.out.println(this.getName() + " eats " + other.getName() + " at " + x + ", " + y);
+                world.addLog(this.getName() + " eats " + other.getName() + " at " + x + ", " + y);
                 other.setAlive(false);
                 world.moveOrganism(x, y, other.getX(), other.getY());
             }

@@ -91,9 +91,9 @@ public class Human extends Animal {
                 // Szybkość antylopy
                 if (specialAction == 0 && specialActionCooldown == 0) {
                     specialAction = 5;
-                    System.out.println("Antelope speed activated");
+                    world.addLog("Antelope speed activated");
                 } else {
-                    System.out.println(
+                    world.addLog(
                             "specialAction: " + specialAction + " specialActionCooldown: " + specialActionCooldown);
                 }
                 return false;
@@ -110,10 +110,10 @@ public class Human extends Animal {
     public void collision(Organism other) {
         if (other.getStrength() > this.strength) {
             this.setAlive(false);
-            System.out.println(other.getName() + " eats " + this.getName() + " at " + x + ", " + y);
+            world.addLog(other.getName() + " eats " + this.getName() + " at " + x + ", " + y);
         } else {
             other.setAlive(false);
-            System.out.println(this.getName() + " eats " + other.getName() + " at " + x + ", " + y);
+            world.addLog(this.getName() + " eats " + other.getName() + " at " + x + ", " + y);
         }
     }
 }

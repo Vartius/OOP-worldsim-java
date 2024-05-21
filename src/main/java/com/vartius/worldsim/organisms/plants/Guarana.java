@@ -23,7 +23,7 @@ public class Guarana extends Plant {
     public void collision(Organism other) {
         super.collision(other);
         other.setStrength(other.getStrength() + 3);
-        System.out.println(other.getName() + " ate " + this.getName() + " and gained 3 strength");
+        world.addLog(other.getName() + " ate " + this.getName() + " and gained 3 strength");
     }
 
 }
