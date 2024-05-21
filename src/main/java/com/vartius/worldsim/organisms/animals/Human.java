@@ -3,6 +3,7 @@ package com.vartius.worldsim.organisms.animals;
 import com.vartius.worldsim.world.World;
 
 import java.awt.Graphics;
+import java.io.IOException;
 
 import com.vartius.worldsim.organisms.Organism;
 import com.vartius.worldsim.utils.KeyHandler;
@@ -101,6 +102,21 @@ public class Human extends Animal {
                 // quit
                 System.exit(0);
                 break;
+            case 'y':
+                // save
+                try {
+                    world.save();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return false;
+            case 'l':
+                // load
+                try {
+                    world.load(keyHandler);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
         }
         return true;
 

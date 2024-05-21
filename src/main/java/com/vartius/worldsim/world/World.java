@@ -3,11 +3,17 @@ package com.vartius.worldsim.world;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import com.vartius.worldsim.organisms.Organism;
 import com.vartius.worldsim.organisms.animals.*;
 import com.vartius.worldsim.organisms.plants.*;
 import com.vartius.worldsim.utils.KeyHandler;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Random;
@@ -25,6 +31,7 @@ public class World {
     private List<Organism> organisms = new ArrayList<>();
     private int turnCounter;
     private JTextArea logs = new JTextArea();
+    private boolean isPlayerTurn = false;
 
     public World(int width, int height, int organismCount, JTextArea logs) {
         this.width = width;
@@ -82,6 +89,10 @@ public class World {
         turnCounter++;
         this.organisms = sortOrganisms();
         for (int i = 0; i < organisms.size(); i++) {
+            if (!(organisms.get(i) instanceof Human) && isPlayerTurn) {
+                continue;
+            } else
+                isPlayerTurn = false;
             // check if human
             if (organisms.get(i) instanceof Human) {
                 Human human = (Human) organisms.get(i);
@@ -103,6 +114,10 @@ public class World {
                             ;
                     }
                     human.setSpecialActionCooldown(5);
+                }
+                if (isPlayerTurn) {
+                    turnCounter--;
+                    return;
                 }
             } else if (organisms.get(i).isAlive() && organisms.get(i).getAge() != turnCounter) {
                 organisms.get(i).action();
@@ -314,13 +329,88 @@ public class World {
         g.drawString("Turn: " + turnCounter + " E: specialActivty Q: Quit", 10, 30);
     }
 
-    public void drawControl(Graphics g, int windowWidth, int windowHeight) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'drawControl'");
-    }
-
     public void addLog(String log) {
         logs.append(log + "\n");
+    }
+
+    public void save() throws IOException {
+        // world width, world height, turnCounter
+        // specialActionCooldown, specialAction
+        // organism count
+        // for each organism: name, x, y, age, strength, initiative, alive
+
+        // save to file save.json
+        System.out.println("Saving...");
+        JSONObject world = new JSONObject();
+        world.put("width", width);
+        world.put("height", height);
+        world.put("turnCounter", turnCounter);
+        // world.put("specialActionCooldown", getHuman().getSpecialActionCooldown());
+        // world.put("specialAction", getHuman().getSpecialAction());
+
+        JSONArray organismsArray = new JSONArray();
+        for (Organism organism : organisms) {
+            JSONObject org = new JSONObject();
+            if (organism instanceof Human) {
+                org.put("specialActionCooldown", ((Human) organism).getSpecialActionCooldown());
+                org.put("specialAction", ((Human) organism).getSpecialAction());
+            }
+            org.put("name", organism.getName());
+            org.put("x", organism.getX());
+            org.put("y", organism.getY());
+            org.put("age", organism.getAge());
+            org.put("strength", organism.getStrength());
+            org.put("initiative", organism.getInitiative());
+            org.put("alive", organism.isAlive());
+            organismsArray.put(org);
+        }
+        world.put("organisms", organismsArray);
+
+        FileWriter file = new FileWriter("save.json");
+        file.write(world.toString());
+        file.flush();
+        file.close();
+    }
+
+    public void load(KeyHandler keyHandler) throws IOException, InterruptedException {
+        JSONObject world = new JSONObject();
+        FileReader file = new FileReader("save.json");
+        int c;
+        StringBuilder sb = new StringBuilder();
+        while ((c = file.read()) != -1) {
+            sb.append((char) c);
+        }
+        file.close();
+        world = new JSONObject(sb.toString());
+
+        // delete all current organisms
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                grid[i][j] = null;
+            }
+        }
+        organisms.clear();
+
+        width = world.getInt("width");
+        height = world.getInt("height");
+        turnCounter = world.getInt("turnCounter");
+
+        JSONArray organismsArray = world.getJSONArray("organisms");
+        for (int i = 0; i < organismsArray.length(); i++) {
+            JSONObject org = organismsArray.getJSONObject(i);
+            addOrganism(org.getString("name"), org.getInt("x"), org.getInt("y"));
+            if (org.has("specialActionCooldown")) {
+                Human human = (Human) grid[org.getInt("x")][org.getInt("y")];
+                human.setSpecialActionCooldown(org.getInt("specialActionCooldown"));
+                human.setSpecialAction(org.getInt("specialAction"));
+            }
+            Organism organism = grid[org.getInt("x")][org.getInt("y")];
+            organism.setAge(org.getInt("age"));
+            organism.setStrength(org.getInt("strength"));
+            organism.setInitiative(org.getInt("initiative"));
+            organism.setAlive(org.getBoolean("alive"));
+        }
+        isPlayerTurn = true;
     }
 
 }

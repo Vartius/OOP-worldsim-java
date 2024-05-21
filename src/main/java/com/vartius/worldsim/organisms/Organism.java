@@ -80,4 +80,8 @@ public abstract class Organism {
     public abstract void collision(Organism other);
 
     public abstract String draw(Graphics g);
+
+    public void setAge(int age) {
+        this.age = age;
+    }
 }

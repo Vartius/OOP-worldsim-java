@@ -5,6 +5,7 @@ import com.vartius.worldsim.world.World;
 // import com.vartius.worldsim.organisms.animals.Human;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import java.awt.Graphics;
@@ -16,9 +17,9 @@ import java.awt.Toolkit;
 public class App {
     public static void main(String[] args) throws InterruptedException {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int worldWidth = 10;
-        int worldHeight = 10;
-        int organismCount = 10;
+        int worldWidth = 40;
+        int worldHeight = 40;
+        int organismCount = 40;
         // while (true) {
         // String input = javax.swing.JOptionPane.showInputDialog("Enter world width:");
         // if (input == null) {
@@ -55,10 +56,14 @@ public class App {
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
         textArea.setFocusable(false);
-        textArea.setPreferredSize(new Dimension(windowWidth / 2, windowHeight - 100));
         textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
         textArea.setFont(new Font("JetBrainsMono NF", Font.PLAIN, 20));
-        frame.add(textArea, BorderLayout.EAST);
+
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(windowWidth / 2, windowHeight - 100));
+        frame.add(scrollPane, BorderLayout.EAST);
+        // frame.add(textArea, BorderLayout.EAST);
         final World world = new World(worldWidth, worldHeight, organismCount, textArea);
 
         JPanel panel = new JPanel() {
@@ -80,26 +85,6 @@ public class App {
         };
         infoPanel.setPreferredSize(new Dimension(windowWidth, 40));
         frame.add(infoPanel, BorderLayout.NORTH);
-
-        // JPanel controlPanel = new JPanel() {
-        // @Override
-        // public void paintComponent(Graphics g) {
-        // super.paintComponent(g);
-        // world.drawControl(g, windowWidth, windowHeight);
-        // }
-        // };
-        // frame.add(controlPanel);
-
-        // JPanel logPanel = new JPanel() {
-        // @Override
-        // public void paintComponent(Graphics g) {
-        // super.paintComponent(g);
-        // world.drawLogs(g, windowWidth, windowHeight);
-        // }
-        // };
-        // logPanel.setPreferredSize(new Dimension(windowWidth / 2, windowHeight -
-        // 100));
-        // frame.add(logPanel, BorderLayout.EAST);
         frame.setVisible(true);
 
         while (true) {

@@ -15,7 +15,8 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         char keyChar = e.getKeyChar();
-        if (keyChar == 'w' || keyChar == 'a' || keyChar == 's' || keyChar == 'd' || keyChar == 'e' || keyChar == 'q') {
+        if (keyChar == 'w' || keyChar == 'a' || keyChar == 's' || keyChar == 'd' || keyChar == 'e' || keyChar == 'q'
+                || keyChar == 'y' || keyChar == 'l') {
             keyQueue.offer(keyChar);
         }
     }
