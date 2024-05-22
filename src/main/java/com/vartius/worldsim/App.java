@@ -24,29 +24,38 @@ public class App {
         int worldWidth = 20;
         int worldHeight = 20;
         int organismCount = 20;
-        // while (true) {
-        // String input = javax.swing.JOptionPane.showInputDialog("Enter world width:");
-        // if (input == null) {
-        // System.exit(0);
-        // }
-        // // check if input is a number
-        // if (!input.matches("[0-9]+") || input.isEmpty()) {
-        // continue;
-        // }
-        // worldWidth = Integer.parseInt(input);
-        // input = javax.swing.JOptionPane.showInputDialog("Enter world height:");
-        // if (input == null) {
-        // System.exit(0);
-        // }
-        // // check if input is a number
-        // if (!input.matches("[0-9]+") || input.isEmpty()) {
-        // continue;
-        // }
-        // worldHeight = Integer.parseInt(input);
-        // if (worldWidth > 0 && worldHeight > 0) {
-        // break;
-        // }
-        // }
+        while (true) {
+            String input = javax.swing.JOptionPane.showInputDialog("Enter world width:");
+            if (input == null) {
+                System.exit(0);
+            }
+            // check if input is a number
+            if (!input.matches("[0-9]+") || input.isEmpty()) {
+                continue;
+            }
+            worldWidth = Integer.parseInt(input);
+            input = javax.swing.JOptionPane.showInputDialog("Enter world height:");
+            if (input == null) {
+                System.exit(0);
+            }
+            // check if input is a number
+            if (!input.matches("[0-9]+") || input.isEmpty()) {
+                continue;
+            }
+            worldHeight = Integer.parseInt(input);
+            input = javax.swing.JOptionPane.showInputDialog("Enter organism count:");
+            if (input == null) {
+                System.exit(0);
+            }
+            // check if input is a number
+            if (!input.matches("[0-9]+") || input.isEmpty()) {
+                continue;
+            }
+            organismCount = Integer.parseInt(input);
+            if (organismCount > 0 && worldWidth > 0 && worldHeight > 0) {
+                break;
+            }
+        }
         final int windowHeight = screenSize.height - 100;
         final int windowWidth = screenSize.width - 100;
         JFrame frame = new JFrame("WorldSim");

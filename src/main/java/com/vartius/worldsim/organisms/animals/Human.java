@@ -106,6 +106,7 @@ public class Human extends Animal {
                 // save
                 try {
                     world.save();
+                    world.addLog("Game saved");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -114,6 +115,7 @@ public class Human extends Animal {
                 // load
                 try {
                     world.load(keyHandler);
+                    world.addLog("Game loaded");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
