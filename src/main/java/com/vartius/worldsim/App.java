@@ -20,6 +20,7 @@ import java.awt.Toolkit;
 
 public class App {
     public static void main(String[] args) throws InterruptedException {
+        System.out.println("Matsvei Kasparovich, 201627");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int worldWidth = 20;
         int worldHeight = 20;
